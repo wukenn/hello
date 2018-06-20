@@ -1,0 +1,64 @@
+<html>
+	<head>
+		<script
+			  src="https://code.jquery.com/jquery-3.3.1.js"
+			  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+			  crossorigin="anonymous"></script>
+		<title>This is web project</title>
+	</head>
+	<body>
+		counter visitor : {{ .counter}}<br><br><br>
+		<form id="user" method="POST" action="/retrieve">
+			<input type="text" name="name" placeholder="search">
+	  		<input type="submit" value="Submit"><br>
+		</form>
+		
+		<table>
+			<tr>
+				<th>User Id</th>
+				<th>User Name</th>
+				<th>User Email</th>
+				<th>msisdn</th>
+				<th>age</th>
+				<th>Update_time</th>
+			</tr>
+			<tbody id="MyTable">
+			</tbody>
+		</table>	
+					<script>
+					$(document).ready(function(){
+					    $("#user").submit(function(e){
+					    	e.preventDefault();
+					    	var formData = {
+					            'name' : $('input[name=name]').val(),
+					           
+					        };
+
+					        $.ajax({
+					            type        : 'POST', 
+					            url         : '/retrieve', 
+					            data        : formData, 
+					            dataType    : 'json', 
+		                        encode      : true
+	       					})
+					        .done(function(data) {
+					        	  var result = "";
+					        
+				               	  for (i = 0; i < data.length; i++) {
+					               var temp = "<tr><td>"+ data[i].User_id+"</td><td>"+ data[i].Full_name+"</td><td>"+ data[i].User_email+"</td><td>"+ data[i].Msisdn+"</td><td>"+data[i].Age+"</td><td>"+ data[i].Update_time+"</td></tr>";
+					                   result += temp;
+					                   
+					           	  }
+					           	  $("#MyTable").html(result);  
+					           	    
+				            });
+
+
+					    });
+					});
+					</script>
+				
+		
+		
+	</body>
+</html>
